@@ -3,13 +3,15 @@ call plug#begin()
 	Plug 'neovim/nvim-lspconfig'
 
 	"Theme
-	Plug 'tanvirtin/monokai.nvim'
+	"Plug 'tanvirtin/monokai.nvim'
+	"Plug 'lifepillar/vim-gruvbox8'
+	"Plug 'catpuccin/nvim'
+	Plug 'morhetz/gruvbox'
 
 	"lualine
 	Plug 'nvim-lualine/lualine.nvim'
   Plug 'kyazdani42/nvim-web-devicons'
 
-	"test"
   "telescope
   Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
@@ -32,21 +34,30 @@ call plug#begin()
 	Plug 'windwp/nvim-autopairs'
 
 	"vim-surround
-	Plug 'blackcauldron7/surround.nvim'
+	Plug 'tpope/vim-surround'
 
+	"vim-commentary
+	Plug 'tpope/vim-commentary'
 
+	"vim-treesitter
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
+colorscheme gruvbox
+
 lua require('plugins.nvim-lspconfig')
-lua require('plugins.neovim-monokai')
 lua require('plugins.lualine')
 lua require('plugins.nvim-cmp')
 lua require('plugins.lspsaga')
 lua require('plugins.nvim-autopairs')
-lua require('plugins.surround-nvim')
+lua require('plugins.telescope')
+lua require('plugins.treesitter')
 
-set number
+set relativenumber
+set list
+set scrolloff=10
+set termguicolors
 
 " Spaces & Tabs {{{
 set tabstop=2       " number of visual spaces per TAB
@@ -60,6 +71,5 @@ set copyindent      " copy indent from the previous line
 "set listchars+=trail:•
 
 nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
-nnoremap <silent>K :Lspsaga hover_doc<CR>
 nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-
+vnoremap <silent><leader>ca :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
