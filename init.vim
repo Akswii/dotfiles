@@ -26,10 +26,6 @@ call plug#begin()
 	Plug 'hrsh7th/vim-vsnip'
 	Plug 'hrsh7th/vim-vsnip-integ'
 
-	"lspsaga
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'glepnir/lspsaga.nvim'
-
 	"autopairs
 	Plug 'windwp/nvim-autopairs'
 
@@ -49,7 +45,6 @@ colorscheme gruvbox
 lua require('plugins.nvim-lspconfig')
 lua require('plugins.lualine')
 lua require('plugins.nvim-cmp')
-lua require('plugins.lspsaga')
 lua require('plugins.nvim-autopairs')
 lua require('plugins.telescope')
 lua require('plugins.treesitter')
