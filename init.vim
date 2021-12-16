@@ -38,7 +38,50 @@ call plug#begin()
 	"vim-treesitter
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+	"prettier
+	Plug 'jose-elias-alvarez/null-ls.nvim'
+	Plug 'MunifTanjim/prettier.nvim'
+
 call plug#end()
+
+lua << EOF
+
+local null_ls = require("null-ls")
+local prettier = require("prettier")
+
+null_ls.setup({
+   on_attach = function(client, bufnr)
+     if client.resolved_capabilities.document_formatting then
+       vim.cmd("nnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.formatting_seq_sync()<CR>")
+       -- format on save
+       vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_seq_sync()")
+     end
+
+     if client.resolved_capabilities.document_range_formatting then
+       vim.cmd("xnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.range_formatting({})<CR>")
+     end
+   end,
+})
+
+prettier.setup({
+  bin = 'prettierd', -- or `prettierd`
+  filetypes = {
+    "css",
+    "graphql",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "less",
+    "markdown",
+    "scss",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+  },
+})
+
+EOF
 
 colorscheme gruvbox
 
@@ -66,5 +109,5 @@ set copyindent      " copy indent from the previous line
 "set listchars+=trail:•
 
 nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
-nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-vnoremap <silent><leader>ca :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
+
+autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
